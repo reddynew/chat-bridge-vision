@@ -1,10 +1,8 @@
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { HelpCircle, ChevronDown, ChevronUp, X, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import "./faq.css";
 
 interface FAQ {
   question: string;
@@ -47,51 +45,50 @@ const Index = () => {
   );
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-background/80 flex flex-col items-center justify-center p-4 relative">
-      <div className="text-center max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold tracking-tight mb-4 text-foreground">Welcome to Your Application</h1>
-        <p className="text-xl text-muted-foreground mb-8">Your application content goes here</p>
+    <div className="app-container">
+      <div className="content-container">
+        <h1>Welcome to Your Application</h1>
+        <p>Your application content goes here</p>
       </div>
       
       {/* FAQ Widget */}
-      <div className={`fixed bottom-8 right-8 z-50 transition-all duration-500 ease-in-out ${isFAQOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'}`}>
+      <div className={`faq-container ${isFAQOpen ? 'open' : 'closed'}`}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="bg-background rounded-lg shadow-lg border border-border w-80 sm:w-96 max-h-[600px] flex flex-col overflow-hidden"
+          className="faq-widget"
         >
           {/* FAQ Header */}
-          <div className="bg-primary p-4 text-primary-foreground flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <HelpCircle className="h-5 w-5" />
-              <h3 className="font-medium">Frequently Asked Questions</h3>
+          <div className="faq-header">
+            <div className="faq-header-title">
+              <HelpCircle className="icon-small" />
+              <h3>Frequently Asked Questions</h3>
             </div>
-            <Button
-              variant="ghost"
-              size="icon"
+            <button
+              className="icon-button"
               onClick={() => setIsFAQOpen(false)}
-              className="h-8 w-8 rounded-full hover:bg-primary-foreground/20 text-primary-foreground"
             >
-              <X className="h-4 w-4" />
-            </Button>
+              <X className="icon-small" />
+            </button>
           </div>
 
           {/* Search Bar */}
-          <div className="p-3 border-b border-border">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
+          <div className="search-container">
+            <div className="search-input-wrapper">
+              <Search className="search-icon" />
+              <input
+                type="text"
                 placeholder="Search questions..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9"
+                className="search-input"
               />
             </div>
           </div>
 
           {/* FAQ Questions Container */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-2 scrollbar-thin">
+          <div className="faq-questions-container">
             <AnimatePresence initial={false}>
               {filteredFAQs.length > 0 ? (
                 filteredFAQs.map((faq, index) => (
@@ -101,20 +98,17 @@ const Index = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.2 }}
-                    className="border border-border rounded-lg overflow-hidden"
+                    className="faq-item"
                   >
                     <button
                       onClick={() => toggleFAQ(index)}
-                      className={cn(
-                        "w-full px-4 py-3 text-left font-medium flex items-center justify-between transition-colors",
-                        openIndex === index ? "bg-secondary" : "hover:bg-muted"
-                      )}
+                      className={`faq-question ${openIndex === index ? 'active' : ''}`}
                     >
-                      <span className="text-sm">{faq.question}</span>
+                      <span>{faq.question}</span>
                       {openIndex === index ? (
-                        <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                        <ChevronUp className="icon-small" />
                       ) : (
-                        <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                        <ChevronDown className="icon-small" />
                       )}
                     </button>
                     
@@ -125,9 +119,9 @@ const Index = () => {
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.3 }}
-                          className="overflow-hidden"
+                          className="faq-answer-container"
                         >
-                          <div className="p-4 bg-muted/40 text-sm">
+                          <div className="faq-answer">
                             {faq.answer}
                           </div>
                         </motion.div>
@@ -136,7 +130,7 @@ const Index = () => {
                   </motion.div>
                 ))
               ) : (
-                <div className="text-center p-4 text-muted-foreground">
+                <div className="no-results">
                   No questions matching your search.
                 </div>
               )}
@@ -146,13 +140,12 @@ const Index = () => {
       </div>
       
       {/* FAQ Button */}
-      <Button 
+      <button 
         onClick={() => setIsFAQOpen(true)}
-        className={`fixed bottom-8 right-8 z-40 h-14 w-14 rounded-full shadow-lg transition-all duration-300 ${isFAQOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}`}
-        size="icon"
+        className={`help-button ${isFAQOpen ? 'hidden' : 'visible'}`}
       >
-        <HelpCircle className="h-6 w-6" />
-      </Button>
+        <HelpCircle className="icon-medium" />
+      </button>
     </div>
   );
 };
