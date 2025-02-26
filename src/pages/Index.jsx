@@ -4,12 +4,7 @@ import { HelpCircle, ChevronDown, ChevronUp, X, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./faq.css";
 
-interface FAQ {
-  question: string;
-  answer: string;
-}
-
-const faqs: FAQ[] = [
+const faqs = [
   { question: "What services do you offer?", answer: "We provide access to qualified lawyers for consultations, legal advice, document review, and representation in various legal matters such as criminal, family, corporate, and more." },
   { question: "How do I book a lawyer?", answer: "Simply enter your legal issue, and we'll match you with a qualified lawyer available in your area. You can then schedule a consultation at your convenience." },
   { question: "How much does it cost to consult a lawyer?", answer: "The consultation fees depend on the lawyer's expertise and the nature of the case. You will be provided with an estimate before you book a session." },
@@ -32,10 +27,10 @@ const faqs: FAQ[] = [
 
 const Index = () => {
   const [isFAQOpen, setIsFAQOpen] = useState(false);
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   
-  const toggleFAQ = (index: number) => {
+  const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
   
